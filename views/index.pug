@@ -1,0 +1,22 @@
+//- Username, password, email, age, 3 ?'s
+extends layout
+
+block content
+    h3=title
+    form(id='form' method='post' action='/submitted')
+        p Name:&nbsp;
+            input(type='text' name='name')
+        p Password:&nbsp;
+            input(type='text' name='password')
+        p E-mail:&nbsp;
+            input(type='text' name='e-mail')
+        p Age:&nbsp;
+            input(type='text' name='age')
+        p Q1: What is your mother's maiden name?
+            input(type='text' name='q1')
+        p Q2: What city were you born in?
+            input(type='text' name='q2')
+        p Q3: What was your first pet's name?
+            input(type='text' name='q3') 
+
+//- need to salt and hash password
