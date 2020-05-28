@@ -1,0 +1,26 @@
+extends layout
+
+block content
+    form(id='form', method='post', action='/create')
+        label(for='name') Name:
+        input(type='text', name='name')
+        br
+        label(for='password') Password:
+        input(type="text", name='password')
+        br
+        label(for='email') E-Mail:
+        input(type="text", name='email')
+        br
+        label(for='age') Age:
+        input(type="text", name='age')
+        br
+        label(for='questionOne') What is your mothers maiden name?:
+        input(type='text', name='questionOne')
+        br
+        label(for='questionTwo') What city were you born in?:
+        input(type='text', name='questionTwo')
+        br
+        label(for='questionThree') What was your first pet's name?:
+        input(type='text', name='questionThree')
+        br
+        input(type='submit', value='Add New User')

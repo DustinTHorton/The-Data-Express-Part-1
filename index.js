@@ -50,11 +50,13 @@ app.post('/', urlencodedParser, (req, res) => {
 })
 
 app.get('/private', checkAuth, (req, res) => {
-    res.send(`Authorized access: Welcome ${req.session.user.username} br/>`)
+    // res.send(`Authorized access: Welcome ${req.session.user.username}`)
+    res.render('private')
 })
 
 app.get('/public', (req, res) => {
-    res.send('Public Access')
+    // res.send('Public Access')
+    res.redirect('index')
 })
 
 app.get('logout', (req, res) => {
@@ -65,7 +67,7 @@ app.get('layout', (req, res) => {
 
 })
 
-app.get('/', routes.index);
+// app.get('/', routes.index);
 app.get('/create', routes.index);
 app.post('create', urlencodedParser, routes.createPerson);
 app.get('/edit/:id', routes.edit);
@@ -94,6 +96,6 @@ app.get('/clear', (req, res) => {
     res.redirect('/');
 })
 
-app.get('/', routes.passwordSalting)
+// app.get('/', routes.passwordSalting)
 
 app.listen(3000)

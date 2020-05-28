@@ -1,0 +1,24 @@
+html{
+    background:#000080;
+    color: #aaa9ad;
+    padding: 20px;
+}
+
+.menu_item{
+    display: inline-block;
+    width: 80px;
+    margin: 5px;
+    padding: 5px;
+    text-align: center;
+    background: #553D67;
+    user-select: none;
+}
+
+li{
+    list-style: none;
+}
+
+a{
+    text-decoration: none;
+    color: #fff;
+}
