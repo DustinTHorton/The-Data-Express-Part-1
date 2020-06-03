@@ -1,6 +1,6 @@
 html{
-    background:#000080;
-    color: #aaa9ad;
+    background:#2512B8;
+    color: #FFF;
     padding: 20px;
 }
 
@@ -10,7 +10,7 @@ html{
     margin: 5px;
     padding: 5px;
     text-align: center;
-    background: #553D67;
+    background: #003785;
     user-select: none;
 }
 
@@ -21,4 +21,30 @@ li{
 a{
     text-decoration: none;
     color: #fff;
+}
+
+head {
+    text-align: center;
+}
+body {
+    text-align: center;
+}
+.btn {
+    background: #916024;
+    color: #B85512;
+    border: 5px solid #6E5EEB;
+    border-radius: 15px;
+    padding: 12px;
+    margin: 7px auto;
+    width: 200px;
+    text-align: center;
+    cursor: pointer;
+}
+  
+#response {
+    text-align: center;
+}
+  
+.btn:hover {
+    background-color: #070;
 }
