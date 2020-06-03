@@ -60,7 +60,7 @@ exports.create = (req, res) => {
 exports.createUser = (req, res) => {
     bcrypt.hash(req.body.password, 10, function(err, hash) {
         let user = new User({
-            avatarUrl : '/myAvatars' + user.name,
+            avatarUrl : '/myAvatars/' + req.body.name,
             name: req.body.name,
             password: hash,
             email: req.body.email,
