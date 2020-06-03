@@ -1,0 +1,44 @@
+extends layout
+
+block content
+    form(id='form', method='post', action='/edit/' + user.name)
+      label(for='name') Name:
+      input(type='text', name='name' value=user.name)
+      br
+      label(for='password') Password:
+      input(type="text", name='password')
+      br
+      label(for='email') E-Mail:
+      input(type="text", name='email' value=user.email)
+      br
+      label(for='age') Age:
+      input(type="text", name='age' value=user.age)
+      br
+      label(for='question1') Question 1: How many licks does it take to get to the center of a toosie pop?
+      select(name='question1')
+        option(select = user.question1) #{user.question1}
+
+        option(value='Answer 1') 1
+        option(value='Answer 2') 11
+        option(value="Answer 3") 364
+        option(value="Answer 4") Other
+      br
+      label(for='question2') Question 2: Are Video Games good?
+      select(name='question2')
+        option(select = user.question2) #{user.question2}
+
+        option(value='Answer 5') Yes
+        option(value='Answer 6') No
+        option(value="Answer 7") Maybe
+        option(value="Answer 8") Other
+      br
+      label(for='question3') Question 3: Are you ready to have an account to this website?
+      select(name='question3')
+        option(select = user.question3) #{user.question3}
+
+        option(value='Answer 9') Yes
+        option(value='Answer 10') No
+        option(value="Answer 11") Maybe
+        option(value="Answer 12") Other
+      br
+      input(type='submit', value='Update User')

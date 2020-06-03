@@ -1,9 +1,8 @@
-//- Username, password, email, age, 3 ?'s
 extends layout
 
 block content
     h3=title
-    form(id='form' method='post' action='/submitted')
+    form(id='form' method='post' action='/create')
         p Name:&nbsp;
             input(type='text' name='name')
         p Password:&nbsp;
@@ -12,11 +11,26 @@ block content
             input(type='text' name='e-mail')
         p Age:&nbsp;
             input(type='text' name='age')
-        p Q1: What is your mother's maiden name?
-            input(type='text' name='q1')
-        p Q2: What city were you born in?
-            input(type='text' name='q2')
-        p Q3: What was your first pet's name?
-            input(type='text' name='q3') 
-
-//- need to salt and hash password
+        br    
+        label(for='question1') Question 1: How many licks does it take to get to the center of a toosie pop?
+        select(name='question1')
+            option(value='Answer 1') 1
+            option(value='Answer 2') 11
+            option(value='Answer 3') 364
+            option(value='Answer 4') Other
+        br
+        label(for='question2') Question 2: Are Video Games good?
+        select(name='question2')
+            option(value='Answer 5') Yes
+            option(value='Answer 6') No
+            option(value='Answer 7') Maybe
+            option(value='Answer 8') Other
+        br    
+        label(for='question3') Question 3: Are you ready to have an account to this website?
+        select(name='question3')
+            option(value='Answer 9') Yes
+            option(value='Answer 10') No
+            option(value='Answer 11') Maybe
+            option(value='Answer 12') Other
+        br
+        input(type='submit', value='Add New User')    

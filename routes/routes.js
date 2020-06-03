@@ -1,14 +1,19 @@
+  
 const mongoose = require('mongoose');
-const express = require('express'); 
+const express = require('express');
 
-mongoose.connect('mongodb+srv://DustinHorton:Kitoshi@cluster0-ug0sk.mongodb.net/TheDataExpress?retryWrites=true&w=majority',{useUnifiedTopology: true, useNewUrlParser: true});
+//mongoose.connect('mongodb+srv://DustinHorton:Kitoshi@cluster0-ug0sk.mongodb.net/TheDataExpress?retryWrites=true&w=majority',{useUnifiedTopology: true, useNewUrlParser: true});
+mongoose.connect('mongodb+srv://user:pass1234@cluster0-6simv.mongodb.net/TheDataExpress?retryWrites=true&w=majority',{useUnifiedTopology: true, useNewUrlParser: true});
 
-const mbd = mongoose.connection;
-mbd.on('error', console.error.bind(console, 'connection error'));
-mbd.once('open', callback =>{
+
+const mdb = mongoose.connection;
+mdb.on('error', console.error.bind(console, 'connection error'));
+mdb.once('open', callback =>{
 });
 
-let personSchema = mongoose.Schema({
+const UserSchema = mongoose.Schema(
+    {
+    avatarUrl : String,    
     name: String,
     password: String,
     email: String,
@@ -18,92 +23,171 @@ let personSchema = mongoose.Schema({
     questionThree: String
 });
 
-let Person = mongoose.model('Database_User', personSchema);
+var cookiecounter = 0
+let User = mongoose.model("Database_User", UserSchema);
 
-exports.index = (req,res) => {
-    Person.find((err, person)=> {
+exports.index = (req, res) => {
+    User.find((err, user)=> {
         if (err) return console.error(err);
     res.render('index', {
         title: "Users List",
-        people: person
+        userList: user
     })
   })
 }
 
+exports.private = (req,res) => {
+    User.findOne({name:req.session.user.user}, (err, user) => {
+        if (err) return console.error(err);
+        cookiecounter = cookiecounter + 1;
+    if(req.cookies.beenHereBefore == 'yes'){
+        res.cookie('visited', cookiecounter, {maxAge: 9999999999})
+        res.render('private',{title: 'Access granted', cookieData: `You have been here ${cookiecounter} time(s) before.`,user: user, avatarUrl: user.avatarUrl})
+    } else {
+        res.cookie('beenHereBefore', 'yes', {maxAge: 9999999999})
+        res.cookie('visited', 0, {maxAge: 9999999999})
+        res.render('private',{title: 'Access granted', cookieData: `This is your first time here.`,user: user, avatarUrl: user.avatarUrl})
+    }
+    })
+}
 
-exports.create = (req,res) => {
+exports.create = (req, res) => {
     res.render('create',{
-        titile: 'Add New User'
+        title: 'Add New User'
     });
 }
 
-exports.createPerson = (req, res) => {
-    let person = new Person({
-        name: req.body.name,
-        password: req.body.password,
-        email: req.body.email,
-        age: req.body.age,
-        questionOne: req.body.questionOne,
-        questionTwo: req.body.questionTwo,
-        questionThree: req.body.questionThree
-    });
-    person.save((err,person) => {
-        if(err) return console.error(err);
-        console.log(req.body.name + " has been added");
-    });
-    res.redirect('/');
+exports.createUser = (req, res) => {
+    bcrypt.hash(req.body.password, 10, function(err, hash) {
+        let user = new User({
+            avatarUrl : '/myAvatars' + user.name,
+            name: req.body.name,
+            password: hash,
+            email: req.body.email,
+            age: req.body.age,
+            questionOne: req.body.question1,
+            questionTwo: req.body.question2,
+            questionThree: req.body.question3
+        });
+        user.save((err, user) => {
+            if(err) return console.error(err);
+            console.log(user.name + " has been added");
+            console.log(user);
+        });
+    })
+    
+    res.redirect('/submitted');
 };
 
 exports.edit = (req, res) => {
-  Person.findById(req.params.id, (err, person) => {
-    if(err) return console.error(err);
-    res.render('edit', {
-      title: 'Edit User',
-      person
+    console.log(req.session.user.user);
+    User.findOne({name:req.session.user.user}, (err, user) => {
+        console.log(user)
+        if (err) return console.error(err);
+        res.render('edit', {
+            title:'Edit User',
+            user:user
+        });
     });
-  });
 };
 
-exports.editPerson = (req, res) => {
-    Person.findById(req.params.id, (err, person) => {
-        if(err) return console.error(err);
-        person.name = req.body.name,
-        person.password = req.body.password,
-        person.email = req.body.email,
-        person.age = req.body.age,
-        person.questionOne = req.body.questionOne,
-        person.questionTwo = req.body.questionTwo,
-        person.questionThree = req.body.questionThree
-        person.save((err, person) => {
+exports.editUser = (req, res) => {
+    bcrypt.hash(req.body.password, 10, function(err, hash) {
+        User.findOne({name:req.params.id}, (err, user) => {
             if(err) return console.error(err);
-            console.log(req.body.name + ' has been updated');
+            req.session.user.user = req.body.name,
+            console.log("Session user:" + req.session.user.user);
+            user.avatarUrl = req.body.avatarUrl,
+            user.name = req.body.name,
+            user.password = hash,
+            user.email = req.body.email,
+            user.age = req.body.age,
+            user.questionOne = req.body.questionOne,
+            user.questionTwo = req.body.questionTwo,
+            user.questionThree = req.body.questionThree
+
+            res.redirect('/private');
+
+            user.save((err, user) => {
+                if(err) return console.error(err);
+                console.log(req.body.name + ' has been updated');
+            });
         });
     });
-    res.redirect('/');
+    
 };
-
-
-exports.delete = (req,res) => {
-    Person.findByIdAndRemove(req.params.id, (err,person)=>{
-        if(err) return console.error(err);
-        res.redirect('/');
-    });
-};
-
-exports.details = (req,res) => {
-    Person.findById(req.params.id, (err,person) => {
-        if(err) return console.error(err);
-        res.render('User details', {
-            title: person.name + "'s Details",
-            person
-        });
-    });
-};
-
-
+111111111
 const bcrypt = require('bcryptjs')
 
  exports.passwordSalting = (req, res) => {
      let salt = bcrypt.genSaltSync(10)
      let has = bcrypt.hashSync()
- }
+}
+
+exports.avatar = (req,res) => {
+    
+}
+
+exports.api = (req,res) => {
+    User.find({},(err, users) => {
+        if (users) {
+            var questionOneAnswers = [];
+            var questionTwoAnswers = [];
+            var questionThreeAnswers = [];
+            for (let i = 0; i < users.length; i++) {
+                const user = users[i];
+                questionOneAnswers.push(user.questionOne);
+                questionTwoAnswers.push(user.questionTwo);
+                questionThreeAnswers.push(user.questionThree);
+            }
+            var tootsieAnswerOne = questionOneAnswers.filter(answer => answer == '1').length;
+            var tootsieAnswerTwo = questionOneAnswers.filter(answer => answer == '11').length;
+            var tootsieAnswerThree = questionOneAnswers.filter(answer => answer == '364').length;
+            var tootsieAnswerFour = questionOneAnswers.filter(answer => answer == 'Other').length;
+            var videoGameAnswerOne = questionTwoAnswers.filter(answer => answer == 'Yes').length;
+            var videoGameAnswerTwo = questionTwoAnswers.filter(answer => answer == 'No').length;
+            var videoGameAnswerThree = questionTwoAnswers.filter(answer => answer == 'Maybe').length;
+            var videoGameAnswerFour = questionTwoAnswers.filter(answer => answer == 'Other').length;
+            var accountAnswerOne = questionThreeAnswers.filter(answer => answer == 'Yes').length;
+            var accountAnswerTwo = questionThreeAnswers.filter(answer => answer == 'No').length;
+            var accountAnswerThree = questionThreeAnswers.filter(answer => answer == 'Maybe').length;
+            var accountAnswerFour = questionThreeAnswers.filter(answer => answer == 'Other').length;
+            //Converting to Percentages
+            var tootsiePercentOne = Math.round(tootsieAnswerOne / users.length * 100);
+            var tootsiePercentTwo = Math.round(tootsieAnswerTwo / users.length * 100);
+            var tootsiePercentThree = Math.round(tootsieAnswerThree / users.length * 100);
+            var tootsiePercentFour = Math.round(tootsieAnswerFour / users.length * 100);
+            var videoGamePercentOne = Math.round(videoGameAnswerOne / users.length * 100);
+            var videoGamePercentTwo = Math.round(videoGameAnswerTwo / users.length * 100);
+            var videoGamePercentThree = Math.round(videoGameAnswerThree / users.length * 100);
+            var videoGamePercentFour = Math.round(videoGameAnswerFour / users.length * 100);
+            var accountPercentOne = Math.round(accountAnswerOne / users.length * 100);
+            var accountPercentTwo = Math.round(accountAnswerTwo / users.length * 100);
+            var accountPercentThree = Math.round(accountAnswerThree / users.length * 100);
+            var accountPercentFour = Math.round(accountAnswerFour / users.length * 100);
+            res.send({data:{
+                tootsiePercentages:[
+                    tootsiePercentOne,tootsiePercentTwo,tootsiePercentThree,tootsiePercentFour
+                ],
+                videoGamePercentages:[
+                    videoGamePercentOne,videoGamePercentTwo,videoGamePercentThree,videoGamePercentFour    
+                ],
+                accountPercentages:[
+                    accountPercentOne,accountPercentTwo,accountPercentThree,accountPercentFour
+                ]
+            }})
+        }else{
+            res.send({data:{
+                tootsiePercentages:[
+                    0,0,0,0
+                ],
+                videoGamePercentages:[
+                    0,0,0,0    
+                ],
+                accountPercentages:[
+                    0,0,0,0
+                ]
+            }});
+        }
+    });
+}
