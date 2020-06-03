@@ -1,0 +1,47 @@
+extends layout
+
+block content
+  table(class='gridtable')
+    tr 
+      th Username
+      th
+      th
+      th Email
+      th
+      th
+      th Age
+      th
+      th
+      th Toosie Pops Lick
+      th
+      th
+      th Video Games Opinion
+      th
+      th
+      th Ready For Account
+      th 
+      tr
+        td #{user.name}
+        td
+        td
+        td #{user.email}
+        td
+        td
+        td #{user.age}
+        td
+        td
+        td #{user.question1}
+        td
+        td
+        td #{user.question2}
+        td
+        td
+        td #{user.question3}
+        td
+          a(href='/edit/' + user.name) Edit User
+        td
+  h3= cookieData
+  p
+  #menu
+    a(href='/logout') Logout           
+
