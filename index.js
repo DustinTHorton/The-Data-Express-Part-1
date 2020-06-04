@@ -100,4 +100,8 @@ app.get('/clear', (req, res) => {
     res.redirect('/');
 });
 
+
+app.get('/avatarEdit/:id', routes.avatarEdit);
+app.post('/avatarEdit/:id', routes.avatar);
+
 app.listen(3000);

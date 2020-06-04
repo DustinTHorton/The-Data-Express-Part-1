@@ -31,18 +31,26 @@ block content
         td #{user.age}
         td
         td
-        td #{user.question1}
+        td #{user.questionOne}
         td
         td
-        td #{user.question2}
+        td #{user.questionTwo}
         td
         td
-        td #{user.question3}
+        td #{user.questionThree}
         td
           a(href='/edit/' + user.name) Edit User
         td
+        br
+        a(href='/avatarEdit/' + user.name) Customize Avatar
   h3= cookieData
   p
   #menu
-    a(href='/logout') Logout           
+    a(href='/logout') Logout
 
+  div(id='canvasID')
+    canvas(id='canvas1')
+    canvas(id='canvas2')
+    canvas(id='canvas3')
+
+  script(src="./js/canvas.js")

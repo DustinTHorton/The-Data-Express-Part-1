@@ -2,8 +2,8 @@
 const mongoose = require('mongoose');
 const express = require('express');
 
-//mongoose.connect('mongodb+srv://DustinHorton:Kitoshi@cluster0-ug0sk.mongodb.net/TheDataExpress?retryWrites=true&w=majority',{useUnifiedTopology: true, useNewUrlParser: true});
-mongoose.connect('mongodb+srv://user:pass1234@cluster0-6simv.mongodb.net/TheDataExpress?retryWrites=true&w=majority',{useUnifiedTopology: true, useNewUrlParser: true});
+mongoose.connect('mongodb+srv://DustinHorton:Kitoshi@cluster0-ug0sk.mongodb.net/TheDataExpress?retryWrites=true&w=majority',{useUnifiedTopology: true, useNewUrlParser: true});
+//mongoose.connect('mongodb+srv://user:pass1234@cluster0-6simv.mongodb.net/TheDataExpress?retryWrites=true&w=majority',{useUnifiedTopology: true, useNewUrlParser: true});
 
 
 const mdb = mongoose.connection;
@@ -53,21 +53,22 @@ exports.private = (req,res) => {
 
 exports.create = (req, res) => {
     res.render('create',{
-        title: 'Add New User'
+        title: 'Add New User',
+        avatarUrl : '/myAvatars/face/eyes1/nose2/mouth4/DEADBF/150'
     });
 }
 
 exports.createUser = (req, res) => {
     bcrypt.hash(req.body.password, 10, function(err, hash) {
         let user = new User({
-            avatarUrl : '/myAvatars/' + req.body.name,
+            avatarUrl : '/myAvatars/face/eyes1/nose2/mouth4/DEADBF/150',
             name: req.body.name,
             password: hash,
             email: req.body.email,
             age: req.body.age,
-            questionOne: req.body.question1,
-            questionTwo: req.body.question2,
-            questionThree: req.body.question3
+            questionOne: req.body.questionOne,
+            questionTwo: req.body.questionTwo,
+            questionThree: req.body.questionThree
         });
         user.save((err, user) => {
             if(err) return console.error(err);
@@ -80,13 +81,12 @@ exports.createUser = (req, res) => {
 };
 
 exports.edit = (req, res) => {
-    console.log(req.session.user.user);
     User.findOne({name:req.session.user.user}, (err, user) => {
         console.log(user)
         if (err) return console.error(err);
-        res.render('edit', {
-            title:'Edit User',
-            user:user
+        res.render('edit',{
+            title: 'Edit User',
+            user: user
         });
     });
 };
@@ -125,7 +125,15 @@ const bcrypt = require('bcryptjs')
 }
 
 exports.avatar = (req,res) => {
-    
+    User.find({name:req.session.user.user},(err, user) => {
+        eyes = req.body.eye_value
+        nose = req.body.nose_value
+        mouth = req.body.mouth_value
+        color = req.body.hex_value
+        user.avatarUrl = `/myAvatars/face/${eyes}/${nose}/mouth1/${color}/150`
+        user.save();
+        res.redirect("/private");
+    });
 }
 
 exports.api = (req,res) => {
@@ -191,3 +199,20 @@ exports.api = (req,res) => {
         }
     });
 }
+
+exports.avatarEdit = (req,res) => {
+    User.findOne({name:req.params.id}, (err, user) => {
+       res.render('avatarEdit', {
+           user: user
+        });
+    });
+}
+
+exports.avatarSee = (req,res) => {
+    User.findOne({name:req.params.id}, (err, user) => {
+        
+    });
+};
+
+
+    

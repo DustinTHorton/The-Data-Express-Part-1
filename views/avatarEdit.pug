@@ -1,0 +1,45 @@
+extends layout
+block otherFiles
+  script(src="avatars.js")
+block content
+  img(src=avatarUrl)
+  form(method='post' action='/avatarEdit/' + user.name)
+    label(for='questionOne') Select your eyes:
+        select(name='eye_value')
+          option(value='eyes1') 1
+          option(value='eyes2') 2
+          option(value="eyes3") 3
+          option(value="eyes4") 4
+          option(value='eyes5') 5
+          option(value='eyes6') 6
+          option(value="eyes7") 7
+          option(value="eyes8") 8
+          option(value="eyes9") 8
+          option(value="eyes10") 10
+        br
+        label(for='nose_value') Select your nose:
+        select(name='nose_value')
+          option(value='nose2') 2
+          option(value='nose3') 3
+          option(value="nose4") 4
+          option(value="nose5") 5
+          option(value='nose6') 6
+          option(value='nose7') 7
+          option(value="nose8") 8
+          option(value="nose9") 9
+        br
+        label(for='mouth_value') Select your mouth:
+        select(name='mouth_value')
+          option(value='mouth1') 1
+          option(value='mouth3') 3
+          option(value="mouth5") 5
+          option(value="mouth6") 6
+          option(value='mouth7') 7
+          option(value='mouth9') 9
+          option(value="mouth10") 10
+          option(value="mouth11") 11
+        br
+        input(type="text" id='hex_value')
+    input(type='submit' value='Save my avatar' id='save_avatar')
+  br
+  a(href='/private/' + user.name) Back to my page
