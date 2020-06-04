@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 const express = require('express');
 
-mongoose.connect('mongodb+srv://DustinHorton:Kitoshi@cluster0-ug0sk.mongodb.net/TheDataExpress?retryWrites=true&w=majority',{useUnifiedTopology: true, useNewUrlParser: true});
-//mongoose.connect('mongodb+srv://user:pass1234@cluster0-6simv.mongodb.net/TheDataExpress?retryWrites=true&w=majority',{useUnifiedTopology: true, useNewUrlParser: true});
+//mongoose.connect('mongodb+srv://DustinHorton:Kitoshi@cluster0-ug0sk.mongodb.net/TheDataExpress?retryWrites=true&w=majority',{useUnifiedTopology: true, useNewUrlParser: true});
+mongoose.connect('mongodb+srv://user:pass1234@cluster0-6simv.mongodb.net/TheDataExpress?retryWrites=true&w=majority',{useUnifiedTopology: true, useNewUrlParser: true});
 
 
 const mdb = mongoose.connection;
@@ -96,7 +96,7 @@ exports.editUser = (req, res) => {
             if(err) return console.error(err);
             req.session.user.user = req.body.name,
             console.log("Session user:" + req.session.user.user);
-            user.avatarUrl = req.body.avatarUrl,
+            user.avatarUrl = '/myAvatars/' + req.body.name,
             user.name = req.body.name,
             user.password = hash,
             user.email = req.body.email,
@@ -130,49 +130,58 @@ exports.avatar = (req,res) => {
 exports.api = (req,res) => {
     User.find({},(err, users) => {
         if (users) {
-            var questionOneAnswers = [];
-            var questionTwoAnswers = [];
-            var questionThreeAnswers = [];
+            let questionOneAnswers = [];
+            let questionTwoAnswers = [];
+            let questionThreeAnswers = [];
             for (let i = 0; i < users.length; i++) {
                 const user = users[i];
                 questionOneAnswers.push(user.questionOne);
                 questionTwoAnswers.push(user.questionTwo);
                 questionThreeAnswers.push(user.questionThree);
             }
-            var tootsieAnswerOne = questionOneAnswers.filter(answer => answer == '1').length;
-            var tootsieAnswerTwo = questionOneAnswers.filter(answer => answer == '11').length;
-            var tootsieAnswerThree = questionOneAnswers.filter(answer => answer == '364').length;
-            var tootsieAnswerFour = questionOneAnswers.filter(answer => answer == 'Other').length;
-            var videoGameAnswerOne = questionTwoAnswers.filter(answer => answer == 'Yes').length;
-            var videoGameAnswerTwo = questionTwoAnswers.filter(answer => answer == 'No').length;
-            var videoGameAnswerThree = questionTwoAnswers.filter(answer => answer == 'Maybe').length;
-            var videoGameAnswerFour = questionTwoAnswers.filter(answer => answer == 'Other').length;
-            var accountAnswerOne = questionThreeAnswers.filter(answer => answer == 'Yes').length;
-            var accountAnswerTwo = questionThreeAnswers.filter(answer => answer == 'No').length;
-            var accountAnswerThree = questionThreeAnswers.filter(answer => answer == 'Maybe').length;
-            var accountAnswerFour = questionThreeAnswers.filter(answer => answer == 'Other').length;
+            let tootsieAnswerOne = questionOneAnswers.filter(answer => answer == '1').length;
+            let tootsieAnswerTwo = questionOneAnswers.filter(answer => answer == '11').length;
+            let tootsieAnswerThree = questionOneAnswers.filter(answer => answer == '364').length;
+            let tootsieAnswerFour = questionOneAnswers.filter(answer => answer == 'Other').length;
+
+            let tootsieTotal = questionOneAnswers.length
+
+            let videoGameAnswerOne = questionTwoAnswers.filter(answer => answer == 'Yes').length;
+            let videoGameAnswerTwo = questionTwoAnswers.filter(answer => answer == 'No').length;
+            let videoGameAnswerThree = questionTwoAnswers.filter(answer => answer == 'Maybe').length;
+            let videoGameAnswerFour = questionTwoAnswers.filter(answer => answer == 'Other').length;
+
+            let videoGameTotal = questionTwoAnswers.length
+
+            let accountAnswerOne = questionThreeAnswers.filter(answer => answer == 'Yes').length;
+            let accountAnswerTwo = questionThreeAnswers.filter(answer => answer == 'No').length;
+            let accountAnswerThree = questionThreeAnswers.filter(answer => answer == 'Maybe').length;
+            let accountAnswerFour = questionThreeAnswers.filter(answer => answer == 'Other').length;
+
+            let accountTotal = questionThreeAnswers.length
+
             //Converting to Percentages
-            var tootsiePercentOne = Math.round(tootsieAnswerOne / users.length * 100);
-            var tootsiePercentTwo = Math.round(tootsieAnswerTwo / users.length * 100);
-            var tootsiePercentThree = Math.round(tootsieAnswerThree / users.length * 100);
-            var tootsiePercentFour = Math.round(tootsieAnswerFour / users.length * 100);
-            var videoGamePercentOne = Math.round(videoGameAnswerOne / users.length * 100);
-            var videoGamePercentTwo = Math.round(videoGameAnswerTwo / users.length * 100);
-            var videoGamePercentThree = Math.round(videoGameAnswerThree / users.length * 100);
-            var videoGamePercentFour = Math.round(videoGameAnswerFour / users.length * 100);
-            var accountPercentOne = Math.round(accountAnswerOne / users.length * 100);
-            var accountPercentTwo = Math.round(accountAnswerTwo / users.length * 100);
-            var accountPercentThree = Math.round(accountAnswerThree / users.length * 100);
-            var accountPercentFour = Math.round(accountAnswerFour / users.length * 100);
+            let tootsiePercentOne = Math.round(tootsieAnswerOne / users.length * 100);
+            let tootsiePercentTwo = Math.round(tootsieAnswerTwo / users.length * 100);
+            let tootsiePercentThree = Math.round(tootsieAnswerThree / users.length * 100);
+            let tootsiePercentFour = Math.round(tootsieAnswerFour / users.length * 100);
+            let videoGamePercentOne = Math.round(videoGameAnswerOne / users.length * 100);
+            let videoGamePercentTwo = Math.round(videoGameAnswerTwo / users.length * 100);
+            let videoGamePercentThree = Math.round(videoGameAnswerThree / users.length * 100);
+            let videoGamePercentFour = Math.round(videoGameAnswerFour / users.length * 100);
+            let accountPercentOne = Math.round(accountAnswerOne / users.length * 100);
+            let accountPercentTwo = Math.round(accountAnswerTwo / users.length * 100);
+            let accountPercentThree = Math.round(accountAnswerThree / users.length * 100);
+            let accountPercentFour = Math.round(accountAnswerFour / users.length * 100);
             res.send({data:{
                 tootsiePercentages:[
-                    tootsiePercentOne,tootsiePercentTwo,tootsiePercentThree,tootsiePercentFour
+                    tootsiePercentOne,tootsiePercentTwo,tootsiePercentThree,tootsiePercentFour,tootsieTotal
                 ],
                 videoGamePercentages:[
-                    videoGamePercentOne,videoGamePercentTwo,videoGamePercentThree,videoGamePercentFour    
+                    videoGamePercentOne,videoGamePercentTwo,videoGamePercentThree,videoGamePercentFour,videoGameTotal   
                 ],
                 accountPercentages:[
-                    accountPercentOne,accountPercentTwo,accountPercentThree,accountPercentFour
+                    accountPercentOne,accountPercentTwo,accountPercentThree,accountPercentFour,accountTotal
                 ]
             }})
         }else{
