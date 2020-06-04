@@ -51,4 +51,19 @@ body {
 
 canvas {
     background: #000;
+    width: 275px;
+    height: 400px;
+}
+
+#canvasID{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.gridtable{
+    align-items: center;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
 }

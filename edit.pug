@@ -14,31 +14,31 @@ block content
       label(for='age') Age:
       input(type="text", name='age' value=user.age)
       br
-      label(for='question1') Question 1: How many licks does it take to get to the center of a toosie pop?
-      select(name='question1')
-        option(select = user.question1) #{user.question1}
+      label(for='questionOne') Question 1: How many licks does it take to get to the center of a toosie pop?
+      select(name='questionOne')
+        option(select = user.questionOne) #{user.questionOne}
 
-        option(value='Answer 1') 1
-        option(value='Answer 2') 11
-        option(value="Answer 3") 364
-        option(value="Answer 4") Other
+        option(value='1') 1
+        option(value='11') 11
+        option(value="364") 364
+        option(value="Other") Other
       br
-      label(for='question2') Question 2: Are Video Games good?
-      select(name='question2')
-        option(select = user.question2) #{user.question2}
+      label(for='questionTwo') Question 2: Are Video Games good?
+      select(name='questionTwo')
+        option(select = user.questionTwo) #{user.questionTwo}
 
-        option(value='Answer 5') Yes
-        option(value='Answer 6') No
-        option(value="Answer 7") Maybe
-        option(value="Answer 8") Other
+        option(value='Yes') Yes
+        option(value='No') No
+        option(value="Maybe") Maybe
+        option(value="Other") Other
       br
-      label(for='question3') Question 3: Are you ready to have an account to this website?
-      select(name='question3')
-        option(select = user.question3) #{user.question3}
+      label(for='questionThree') Question 3: Are you ready to have an account to this website?
+      select(name='questionThree')
+        option(select = user.questionThree) #{user.questionThree}
 
-        option(value='Answer 9') Yes
-        option(value='Answer 10') No
-        option(value="Answer 11") Maybe
-        option(value="Answer 12") Other
+        option(value='Yes') Yes
+        option(value='No') No
+        option(value="Maybe") Maybe
+        option(value="Other") Other
       br
       input(type='submit', value='Update User')
